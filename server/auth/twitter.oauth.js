@@ -6,6 +6,8 @@ var TwitterStrategy = require('passport-twitter');
 
 var User = require('../api/users/user.model');
 
+var secrets = require ('./secrets.json');
+
 router.get('/', passport.authenticate('twitter'));
 
 router.get('/callback', passport.authenticate('twitter', {
@@ -14,9 +16,9 @@ router.get('/callback', passport.authenticate('twitter', {
 }));
 
 passport.use(new TwitterStrategy({
-	consumerKey: 'xe86sGm0HUu7qTwnQBq89dX02',
-	consumerSecret: 'pD1XEQgYppFpztd86H14d8EQWR0627yZRrFMP53DSOuMf4YaoQ',
-	callbackURL: 'http://127.0.0.1:8080/auth/twitter/callback'
+	consumerKey: secrets.twitter.consumerKey,
+	consumerSecret: secrets.twitter.consumerSecret,
+	callbackURL: secrets.twitter.callbackURL
 }, function (token, refreshToken, profile, done) { 
 	User.findOne({'twitter.id': profile.id }, function (err, user) {
 		if (err) done(err);
